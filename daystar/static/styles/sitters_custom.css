@@ -1,0 +1,19 @@
+.custom-table {
+    border: 3px solid black; /* Set border color to black */
+    border-collapse: collapse;
+}
+.custom-table th, .custom-table td {
+    border: 2px solid black; /* Set border color to black */
+    padding: 8px;
+}
+
+/* 
+.black-background {
+    background-color: black;
+    color: white;
+} */
+
+/* .custom-table tbody tr:first-child {
+    background-color: black;
+    color: white;
+} */

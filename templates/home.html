@@ -1,0 +1,76 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'styles/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/home_custom.css' %}">
+    <title>Day Star Management</title>
+</head>
+<body style="background-color: bisque;">
+    <div class="container mt-3">
+        <h3>Welcome to the DayStar Daycare Dashboard</h3>
+        
+        <!-- Display total number of babies -->
+        <div class='container align_horizon mt-3 p-0'>
+            <p>Total Babies Present: {{ baby_count }}</p>
+            <a href="{% url 'add_baby' %}"><p><button class='btn btn-sm btn-outline-secondary'>Add Baby</button></p></a>
+            <a href="{% url 'view_babies' %}"><p><button class='btn btn-sm btn-outline-secondary'>View Babies</button></p></a>
+        </div>
+        
+        <!-- Display total number of sitters -->
+        <div class='container align_horizon p-0'>
+            <p class=''>Total Sitters: {{ sitter_count }}</p>
+            <a href="{% url 'add_sitter' %}"><p><button class='btn btn-sm btn-outline-secondary'>Add Sitter</button></p></a>
+            <a href="{% url 'view_sitters' %}"><p><button class='btn btn-sm btn-outline-secondary'>View Sitters</button></p></a>
+        </div>
+
+        <!-- Display recent payments -->
+        <div class="card bg-black mt-3">
+            <div class="card-header" style="color: white;">
+                Recent Payments
+            </div>
+            <ul class="list-group list-group-flush" style="max-height: 150px; overflow-y: auto; border: solid 1px;">
+                {% for payment in payments %}
+                    <li class="list-group-item">-- {{ payment.sitter }} received {{ payment.amount }} UGX in {{ payment.payment_type }} on {{ payment.date }}</li>
+                {% empty %}
+                    <li class="list-group-item">No recent payments</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <!-- Display upcoming events or notifications -->
+        <div class="card mt-3 bg-black">
+            <div class="card-header" style="color: white;">
+                Notifications
+            </div>
+            <ul class="list-group list-group-flush" style="max-height: 150px; overflow-y: auto; border: solid 1px;">
+                {% for notification in notifications %}
+                    <li class="list-group-item">-- {{ notification }}</li>
+                {% empty %}
+                    <li class="list-group-item">No notifications</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+
+        <!-- Sitter Activities --> 
+        <div class="card bg-black mb-4 mt-3" style="border: solid 1px black;">
+            <div class="card-header" style="color: white;">
+                Sitter Activity Assignment
+            </div>
+            <ul class="list-group list-group-flush" style="max-height: 150px; overflow-y: auto; border: solid 1px;">
+                {% for activity in activities %}
+                    <li class="list-group-item">-- {{ activity.sitter_name }} assigned to {{ activity.baby_name }} by {{ activity.baby_parent }}</li>
+                {% empty %}
+                    <li class="list-group-item">No active sitter activities</li>
+                {% endfor %}
+            </ul>
+        </div>
+        
+    </div>
+
+</body>
+</html>

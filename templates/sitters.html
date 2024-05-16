@@ -1,0 +1,60 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'styles/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/sitters_custom.css' %}">
+    <title>Day Star Management</title>
+</head>
+<body style="background-color: bisque;">
+    <div class="container">
+        <div class='container align_horizon mt-3 p-0'>
+            <h3>Sitters Present</h3>
+            <a href="{% url 'home' %}"><button class='btn btn-sm btn-outline-secondary mb-3'>Home</button></a>
+        </div>
+        <table class="table table-bordered custom-table">
+            <thead class="table-dark">
+                <tr>
+                    <!-- <th class="black-background" scope="col">#</th> -->
+                    <th class="black-background" scope="col">Name</th>
+                    <th class="black-background" scope="col">Location</th>
+                    <th class="black-background" scope="col">Gender</th>
+                    <th class="black-background" scope="col">Education Level</th>
+                    <th class="black-background" scope="col">Contacts</th>
+                    <th class="black-background" scope="col">On Duty</th>
+                    <th class="black-background" scope="col">Account Balance</th>
+                    <th class="black-background" scope="col">Controls</th> <!-- New column for Controls -->
+                </tr>
+            </thead>
+            <tbody>
+                {% for sitter in sitters %}
+                <tr>
+                    <!-- <th scope="row">{{ sitter.id }}</th> -->
+                    <td>{{ sitter.name }}</td>
+                    <td>{{ sitter.location }}</td>
+                    <td>{{ sitter.gender }}</td>
+                    <td>{{ sitter.education_level }}</td>
+                    <td>{{ sitter.contacts }}</td>
+                    <td>{{ sitter.on_duty }}</td>
+                    <td>{{ sitter.account_balance }}</td>
+                    <td>
+                        <form action="{% url 'delete_sitter' sitter.id %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger" style="border-radius: 0;">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+        
+        
+    </div>
+    
+
+
+</body>
+</html>

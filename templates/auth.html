@@ -1,0 +1,45 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'styles/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/auth_custom.css' %}">
+    
+    <title>Daystar</title>
+</head>
+<body>
+    <div class="container justify-content-start align-items-center p-5" ></div>
+    <div class="container bg-yellow">
+      <div class="row justify-content-center">
+        <div class="col-md-4">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Admin Login</h5>
+              <form method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                  <label for="username">Username</label>
+                  <input type="text" class="form-control" id="username" name="username" placeholder="Enter username">
+                </div>
+                <div class="form-group">
+                  <label for="password">Password</label>
+                  <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+                </div>
+                <button type="submit" class="btn btn-primary btn-block mt-3">Login</button>
+              </form>
+              {% for msg in messages %}
+                <br>
+                <div class="alert alert-danger" role="alert">
+                  {{msg}}
+                </div>
+              {% endfor %}
+            </div>
+          </div>
+            </div>
+          </div>
+          
+    </div>
+</body>
+</html>

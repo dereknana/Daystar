@@ -1,0 +1,65 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'styles/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/babies_custom.css' %}">
+    <title>Day Star Management</title>
+</head>
+<body style="background-color: bisque;">
+    
+    <div class="container">
+        <div class='container align_horizon mt-3 p-0'>
+            <h3>Babies Present</h3>
+            <a href="{% url 'home' %}"><button class='btn btn-sm btn-outline-secondary mb-3'>Home</button></a>
+        </div>
+        <table class="table table-bordered custom-table">
+            <thead class="table-dark">
+                <tr>
+                    <!-- <th scope="col">#</th> -->
+                    <th scope="col">Name</th>
+                    <th scope="col">Age</th>
+                    <th scope="col">Gender</th>
+                    <th scope="col">Location</th>
+                    <th scope="col">Brought by</th>
+                    <th scope="col">Time_Of_Arrival</th>
+                    <th scope="col">Parents Names</th>
+                    <th scope="col">Fee in UGX</th>
+                    <th scope="col">Period Of Stay</th>
+                    <th scope="col">Baby Number</th>
+                    <th scope="black-background" scope="col">Controls</th> <!-- New column for Controls -->
+                </tr>
+            </thead>
+            <tbody>
+                {% for baby in babies %}
+                <tr>
+                    <!-- <th scope="row">{{ baby.id }}</th> -->
+                    <td>{{ baby.name }}</td>
+                    <td>{{ baby.age }}</td>
+                    <td>{{ baby.gender }}</td>
+                    <td>{{ baby.location }}</td>
+                    <td>{{ baby.person_bringing_baby }}</td>
+                    <td>{{ baby.time_of_arrival }}</td>
+                    <td>{{ baby.parents_names }}</td>
+                    <td>{{ baby.fee_in_ugx }}</td>
+                    <td>{{ baby.period_of_stay }}</td>
+                    <td>{{ baby.sitter_assigned_to }}</td>
+                    <!-- <td>{{ baby.baby_number }}</td> -->
+                    <td>
+                        <form action="{% url 'delete_baby' baby.id %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger" style="border-radius: 0;">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+    
+
+
+</body>
+</html>

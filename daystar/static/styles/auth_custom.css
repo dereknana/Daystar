@@ -1,0 +1,4 @@
+.card {
+    position: relative;
+    border: 3px solid #000; /* Thick black border */
+}
