@@ -19,10 +19,12 @@ def redirect_to_dashboard(request):
     return redirect('home')
 
 
+
 def add_baby(request):
     sitters = Sitter.objects.all()
 
     if request.method == 'POST':
+        # Retrieve form data
         name = request.POST.get('name')
         gender = request.POST.get('gender')
         age = request.POST.get('age')
@@ -32,17 +34,16 @@ def add_baby(request):
         parents_names = request.POST.get('parents_names')
         period_of_stay = request.POST.get('period_of_stay')
         baby_number = request.POST.get('baby_number') 
-        sitter_assigned_to = request.POST.get('sitter')
+        sitter_assigned_to_id = request.POST.get('sitter')  # Use the sitter's ID
 
         # Automatically setting a fee based on the period_of_stay
-        if period_of_stay == 'Half Day':
+        if period_of_stay == 'half-day':
             fee_in_ugx = 10000
-        else:# That's when period_of_stay == Full Day
+        else:  # That's when period_of_stay == Full Day
             fee_in_ugx = 15000
 
-            
         # Create a new Baby object
-        new_baby = Baby(
+        new_baby = Baby.objects.create(
             name=name,
             gender=gender,
             age=age,
@@ -50,62 +51,52 @@ def add_baby(request):
             person_bringing_baby=person_bringing_baby,
             time_of_arrival=time_of_arrival,
             parents_names=parents_names,
-            fee_in_ugx=fee_in_ugx,
+            fee_in_ugx=fee_in_ugx,  # Use the dynamically determined fee
             period_of_stay=period_of_stay,
-            baby_number=baby_number,  # Assign 'baby_number' retrieved from the form
-            sitter_assigned_to=sitter_assigned_to
-        )
-        new_baby.save()
-
-
-        sitter_assigned_to = Sitter.objects.get(id=sitter_assigned_to)
-
-
-        new_payment = Payment(
-            sitter = sitter_assigned_to,
-            baby = new_baby,
-            payment_type = period_of_stay,
-            amount = fee_in_ugx,
-            date = time_of_arrival
+            baby_number=baby_number,
+            sitter_assigned_to=sitter_assigned_to_id  # Use the sitter's ID
         )
 
-        new_payment.save()
+        # Fetch the sitter assigned to the baby
+        sitter_assigned_to = Sitter.objects.get(id=sitter_assigned_to_id)
 
-        # Add account Balance
+        # Update the sitter's account balance
         sitter_assigned_to.account_balance += fee_in_ugx
         sitter_assigned_to.save()
 
-        new_notification = Notification(
-            type = "True",
-            message = f"{name} assigned to {sitter_assigned_to}"
-
-        )
-        new_notification.save()
-
-
-
-        new_activity = Activity(
-            sitter_name = sitter_assigned_to,
-            payment_amount = fee_in_ugx,
-            baby_name = name,
-            baby_parent = parents_names
+        # Create a new Payment object
+        new_payment = Payment.objects.create(
+            sitter=sitter_assigned_to,
+            baby=new_baby,
+            payment_type=period_of_stay,
+            amount=fee_in_ugx,
+            date=time_of_arrival
         )
 
-        new_activity.save()
+        # Create a new Notification object
+        new_notification = Notification.objects.create(
+            type="True",
+            message=f"{name} assigned to {sitter_assigned_to.name}"  # Use sitter's name
+        )
 
+        # Create a new Activity object
+        new_activity = Activity.objects.create(
+            sitter_name=sitter_assigned_to.name,  # Use sitter's name
+            payment_amount=fee_in_ugx,
+            baby_name=name,
+            baby_parent=parents_names
+        )
 
+        # Display success message
         messages.success(request, f'Successfully Added a {name}!')
+
         # Sleep function is used here just for demonstration purposes
         # You might not need it in your actual code
         sleep(3)
         return redirect('view_babies')
-    
 
-    else:      
-        # return render(request, 'add_baby.html')
+    else:
         return render(request, 'add_baby.html', {'sitters': sitters})
-
-
 
 def add_sitter(request):
     if request.method == 'POST':
