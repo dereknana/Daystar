@@ -18,6 +18,7 @@ class Baby(models.Model):
 
 
 class Sitter(models.Model):
+    
     name = models.CharField(max_length=100)
     location = models.CharField(max_length=100)
     gender = models.CharField(max_length=10)

@@ -1,0 +1,81 @@
+{% load static %}
+<!DOCTYPE html>
+<!DOCTYPE html>
+    <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Edit {{ baby.name }}'s Details</title>
+            <link rel="stylesheet" href="{% static 'styles/bootstrap.css' %}">
+    </head>
+    <body style="background-color: bisque;">
+        <div class="container mt-5">
+            <h3 class="mb-4">Edit {{ baby.name }}'s Details</h3>
+            <form method="post" action="{% url 'edit_baby' baby.id %}">
+                {% csrf_token %}
+                <div class="form-group mt-3 mb-3">
+                    <label class="mb-2" for="name">Name:</label>
+                    <input type="text" class="form-control" id="name" name="name" value="{{ baby.name }}">
+                </div>
+                <div class="form-group mt-3 mb-3">
+                    <label class="mb-2" for="gender">Gender:</label>
+                    <select id="gender" name="gender" class="form-control" required>
+                        <option value="male" {% if baby.gender == 'male' %}selected{% endif %}>Male</option>
+                        <option value="female" {% if baby.gender == 'female' %}selected{% endif %}>Female</option>
+                    </select>
+                </div>
+                
+                
+                <div class="form-group mt-3 mb-3">
+                    <label class="mb-2" for="age">Age:</label>
+                    <input type="number" class="form-control" id="age" name="age" value="{{ baby.age }}">
+                </div>
+                <div class="form-group mt-3 mb-3">
+                    <label class="mb-2" for="location">Location:</label>
+                    <input type="text" class="form-control" id="location" name="location" value="{{ baby.location }}">
+                </div>
+                <div class="form-group mt-3 mb-3">
+                    <label class="mb-2" for="time_of_arrival">Time of Arrival:</label>
+                    <input type="date" class="form-control" id="time_of_arrival" name="time_of_arrival" value="{{ baby.time_of_arrival }}">
+                </div>
+                <div class="form-group mt-3 mb-3">
+                    <label class="mb-2" for="parents_names">Parents' Names:</label>
+                    <input type="text" class="form-control" id="parents_names" name="parents_names" value="{{ baby.parents_names }}">
+                </div>
+                <!-- <div class="form-group mt-3 mb-3">
+                    <label class="mb-2" for="fee_in_ugx">Fee (UGX):</label>
+                    <input type="number" class="form-control" id="fee_in_ugx" name="fee_in_ugx" value="{{ baby.fee_in_ugx }}">
+                </div> -->
+            
+                <div class="form-group mt-3 mb-3">
+                    <label class="mb-2" for="period_of_stay">Period of Stay:</label>
+                    <div class="radio-container">
+                        <input type="radio" id="half_day" name="period_of_stay" value="half-day" 
+                        {% if baby.period_of_stay == 'half-day' %}
+                        checked 
+                        {% endif %}>
+                        <label for="half_day">Half Day</label>
+                    
+                        <input type="radio" id="full_day" name="period_of_stay" value="full-day" 
+                        {% if baby.period_of_stay == 'full-day' %} 
+                        checked 
+                        {% endif %}>
+                        <label for="full_day">Full Day</label>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="sitter" class="form-label">Sitter Assigned:</label>
+                    <select id="sitter" name="sitter" class="form-control" required>
+                        {% for sitter in other_sitters %}
+                            <option value="{{ sitter.id }}">{{ sitter.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+            </form>
+        </div>
+    
+    </body>
+    </html>
+    
