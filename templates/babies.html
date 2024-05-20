@@ -48,10 +48,17 @@
                     <td>{{ baby.sitter_assigned_to }}</td>
                     <!-- <td>{{ baby.baby_number }}</td> -->
                     <td>
-                        <form action="{% url 'delete_baby' baby.id %}" method="post">
-                            {% csrf_token %}
-                            <button type="submit" class="btn btn-danger" style="border-radius: 0;">Delete</button>
-                        </form>
+                        <div>
+                            <form action="{% url 'delete_baby' baby.id %}" method="post" class="container">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger" style="border-radius: 0;">Delete</button>
+                            </form>
+                            <form action="{% url 'view_baby' baby.id %}" method="post" class="container">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-primary" style="border-radius: 0;">View</button>
+                            </form>
+
+                        </div>
                     </td>
                 </tr>
                 {% endfor %}

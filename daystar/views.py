@@ -177,12 +177,74 @@ def view_babies(request):
 
 
 
+def view_baby(request, baby_id):
+    baby = get_object_or_404(Baby, pk=baby_id)
+    sitter_assigned_to = Sitter.objects.get(id=baby.sitter_assigned_to)
+
+    content = {
+        'baby': baby,
+        'sitter_assigned_to': sitter_assigned_to,
+        'other_sitters':  Sitter.objects.all(),
+
+    }
+    return render(request, 'view_baby.html', content)
+
+
+
+
+
+def edit_baby(request, baby_id):
+    # Retrieve the existing Baby object from the database
+    baby = Baby.objects.get(id=baby_id)
+    sitter_assigned_to = Sitter.objects.get(id=baby.sitter_assigned_to)
+
+
+    if request.method == 'POST':
+        # Update the Baby object with the data submitted in the form
+        baby.name = request.POST['name']
+        baby.gender = request.POST['gender']
+        baby.age = request.POST['age']
+        baby.location = request.POST['location']
+        baby.time_of_arrival = request.POST['time_of_arrival']
+        baby.parents_names = request.POST['parents_names']
+        # baby.fee_in_ugx = request.POST['fee_in_ugx']
+        baby.period_of_stay = request.POST['period_of_stay']
+        baby.sitter_assigned_to = request.POST['sitter']
+
+        if request.POST['period_of_stay'] == 'half-day':
+            baby.fee_in_ugx = 10000
+        else:  # That's when period_of_stay == Full Day
+            baby.fee_in_ugx = 15000
+
+
+        # Save the updated Baby object to the database
+        baby.save()
+
+        # Redirect to a success page or view
+        return redirect('view_babies')
+
+    # Render the edit baby form template with the existing data
+    return render(request, 'view_baby.html', {'baby': baby})
+
+
+
+
+
+
 
 def view_sitters(request):
     all_sitters = Sitter.objects.all()
-
     content = {
-        'sitters': all_sitters
+        'sitters': all_sitters,
     }
 
     return render(request, 'sitters.html', content)
+
+
+
+
+
+def procurement(request):
+    return render(request, 'procurement.html')
+
+

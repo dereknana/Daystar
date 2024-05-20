@@ -41,6 +41,11 @@ class Payment(models.Model):
         return f"{self.sitter.name} - {self.date}"
 
 
+
+
+
+
+
 class ProcurementItem(models.Model):
     name = models.CharField(max_length=100)
     quantity = models.IntegerField()
@@ -58,6 +63,48 @@ class DollSale(models.Model):
 
     def __str__(self):
         return f"Doll sale for {self.baby.name}"
+
+
+
+class Milk(DollSale):
+    pass
+
+
+class Fruits(models.Model):
+    pass
+
+
+class Diapers(models.Model):
+    pass
+
+
+# # ------------------------------------------------------------------
+# class Procurement(models.Model):
+#     ITEM_CHOICES = [
+#         ('Diapers', 'Diapers'),
+#         ('Fruits', 'Fruits'),
+#         ('Milk', 'Milk'),
+#         ('Dolls', 'Dolls'),
+#     ]
+
+#     item = models.CharField(max_length=50, choices=ITEM_CHOICES)
+#     quantity = models.IntegerField()
+#     price_per_unit = models.DecimalField(max_digits=10, decimal_places=2)
+#     date = models.DateField()
+
+#     def __str__(self):
+#         return f"{self.quantity} of {self.item} procured"
+
+# class DollSale(models.Model):
+#     baby = models.ForeignKey(Baby, on_delete=models.CASCADE)
+#     quantity = models.IntegerField()
+#     sale_price = models.DecimalField(max_digits=10, decimal_places=2)
+#     date = models.DateField()
+
+#     def __str__(self):
+#         return f"Doll sale for {self.baby.name}"
+
+# x----------------------------------------
 
 class Activity(models.Model):
     sitter_name = models.CharField(max_length=100)
